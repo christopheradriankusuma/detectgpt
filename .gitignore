@@ -1,0 +1,4 @@
+.env
+detect-gpt/*
+fast-detect-gpt/*
+script.sh
