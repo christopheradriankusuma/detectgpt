@@ -2,3 +2,5 @@
 detect-gpt/*
 fast-detect-gpt/*
 script.sh
+exp_gpt3to4/results/*
+exp_main/results/*
