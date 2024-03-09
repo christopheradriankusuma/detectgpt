@@ -1,4 +1,10 @@
 #!/bin/sh
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=adrian@comp.nus.edu.sg
+#SBATCH --partition=long
+#SBATCH --time=2880
+#SBATCH --gpus=a100:1
+#SBATCH --mem=25G
 
 # setup the environment
 echo `date`, Setup the environment ...
@@ -38,65 +44,53 @@ source_models="davinci-002 gpt-3.5-turbo gpt-4"
 
 scoring_models="pythia-70m pythia-70m-dd pythia-160m pythia-160m-dd opt-125m opt-350m distilgpt2 gpt2 gpt-neo-125m"
 
-# evaluate Fast-DetectGPT in the black-box setting
-# settings="gpt-j-6B:gpt2-xl gpt-j-6B:gpt-neo-2.7B gpt-j-6B:gpt-j-6B"
-# for M in $source_models; do
-#   for D in $datasets; do
-#     for S in $settings; do
-#       IFS=':' read -r -a S <<< $S && M1=${S[0]} && M2=${S[1]}
+# # evaluate Fast-DetectGPT in the black-box setting
+# for D in $datasets; do
+#   for M in $source_models; do
+#     M1=gpt-j-6B  # sampling model
+#     for M2 in $scoring_models; do
 #       echo `date`, Evaluating Fast-DetectGPT on ${D}_${M}.${M1}_${M2} ...
-#       srun python fast-detect-gpt/scripts/fast_detect_gpt.py --reference_model_name $M1 --scoring_model_name $M2 --discrepancy_analytic \
-#                           --dataset $D --dataset_file $data_path/${D}_${M} --output_file $res_path/${D}_${M}.${M1}_${M2}
+#       srun python fast-detect-gpt/scripts/fast_detect_gpt.py --reference_model_name ${M1} --scoring_model_name ${M2} --dataset $D \
+#                           --dataset_file $data_path/${D}_${M} --output_file $res_path/${D}_${M}.${M1}_${M2}
 #     done
 #   done
 # done
-
-for D in $datasets; do
-  for M in $source_models; do
-    M1=gpt-j-6B  # sampling model
-    for M2 in $scoring_models; do
-      echo `date`, Evaluating Fast-DetectGPT on ${D}_${M}.${M1}_${M2} ...
-      srun python fast-detect-gpt/scripts/fast_detect_gpt.py --reference_model_name ${M1} --scoring_model_name ${M2} --dataset $D \
-                          --dataset_file $data_path/${D}_${M} --output_file $res_path/${D}_${M}.${M1}_${M2}
-    done
-  done
-done
-
-# evaluate supervised detectors
-supervised_models="roberta-base-openai-detector roberta-large-openai-detector"
-for M in $source_models; do
-  for D in $datasets; do
-    for SM in $supervised_models; do
-      echo `date`, Evaluating ${SM} on ${D}_${M} ...
-      srun python fast-detect-gpt/scripts/supervised.py --model_name $SM --dataset $D \
-                            --dataset_file $data_path/${D}_${M} --output_file $res_path/${D}_${M}
-    done
-  done
-done
-
-# evaluate baselines
-scoring_models="gpt-neo-2.7B"
-for M in $source_models; do
-  for D in $datasets; do
-    for M2 in $scoring_models; do
-      echo `date`, Evaluating baseline methods on ${D}_${M}.${M2} ...
-      srun python fast-detect-gpt/scripts/baselines.py --scoring_model_name ${M2} --dataset $D \
-                            --dataset_file $data_path/${D}_${M} --output_file $res_path/${D}_${M}.${M2}
-    done
-  done
-done
-
-# evaluate DNA-GPT
-scoring_models="gpt-neo-2.7B"
-for M in $source_models; do
-  for D in $datasets; do
-    for M2 in $scoring_models; do
-      echo `date`, Evaluating DNA-GPT on ${D}_${M}.${M2} ...
-      srun python fast-detect-gpt/scripts/dna_gpt.py --base_model_name ${M2} --dataset $D \
-                            --dataset_file $data_path/${D}_${M} --output_file $res_path/${D}_${M}.${M2}
-    done
-  done
-done
+# 
+# # evaluate supervised detectors
+# supervised_models="roberta-base-openai-detector roberta-large-openai-detector"
+# for M in $source_models; do
+#   for D in $datasets; do
+#     for SM in $supervised_models; do
+#       echo `date`, Evaluating ${SM} on ${D}_${M} ...
+#       srun python fast-detect-gpt/scripts/supervised.py --model_name $SM --dataset $D \
+#                             --dataset_file $data_path/${D}_${M} --output_file $res_path/${D}_${M}
+#     done
+#   done
+# done
+# 
+# # evaluate baselines
+# scoring_models="gpt-neo-2.7B"
+# for M in $source_models; do
+#   for D in $datasets; do
+#     for M2 in $scoring_models; do
+#       echo `date`, Evaluating baseline methods on ${D}_${M}.${M2} ...
+#       srun python fast-detect-gpt/scripts/baselines.py --scoring_model_name ${M2} --dataset $D \
+#                             --dataset_file $data_path/${D}_${M} --output_file $res_path/${D}_${M}.${M2}
+#     done
+#   done
+# done
+# 
+# # evaluate DNA-GPT
+# scoring_models="gpt-neo-2.7B"
+# for M in $source_models; do
+#   for D in $datasets; do
+#     for M2 in $scoring_models; do
+#       echo `date`, Evaluating DNA-GPT on ${D}_${M}.${M2} ...
+#       srun python fast-detect-gpt/scripts/dna_gpt.py --base_model_name ${M2} --dataset $D \
+#                             --dataset_file $data_path/${D}_${M} --output_file $res_path/${D}_${M}.${M2}
+#     done
+#   done
+# done
 
 # evaluate DetectGPT and DetectLLM
 scoring_models="gpt2-xl gpt-neo-2.7B gpt-j-6B"

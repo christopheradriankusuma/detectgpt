@@ -1,0 +1,14 @@
+{
+    "output_file": "/home/a/adrian/cs6207/exp_main/results/xsum_gpt2-xl.t5-3b_opt-125m",
+    "dataset": "xsum",
+    "dataset_file": "/home/a/adrian/cs6207/exp_main/data/xsum_gpt2-xl",
+    "pct_words_masked": 0.3,
+    "mask_top_p": 1.0,
+    "span_length": 2,
+    "n_perturbations": 100,
+    "scoring_model_name": "opt-125m",
+    "mask_filling_model_name": "t5-3b",
+    "seed": 0,
+    "device": "cuda",
+    "cache_dir": "../cache"
+}
