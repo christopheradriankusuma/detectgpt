@@ -1,0 +1,11 @@
+Reference/Scoring,davinci-002,gpt-3.5-turbo,gpt-4,avg
+gpt-j-6B/distilgpt2,0.9309,0.9242,0.8418,0.8990
+gpt-j-6B/gpt-neo-125m,0.9350,0.9479,0.8793,0.9207
+gpt-j-6B/gpt2,0.9348,0.9548,0.8787,0.9227
+opt-13b/opt-125m,0.9408,0.9568,0.8694,0.9223
+opt-13b/opt-350m,0.9479,0.9716,0.9019,0.9405
+palmyra-base/palmyra-small,0.9368,0.9609,0.8803,0.9260
+pythia-6.9b/pythia-160m,0.8945,0.9325,0.8178,0.8816
+pythia-6.9b/pythia-160m-dd,0.9192,0.9248,0.8184,0.8875
+pythia-6.9b/pythia-70m,0.8922,0.8551,0.7516,0.8330
+pythia-6.9b/pythia-70m-dd,0.8841,0.7588,0.7177,0.7869
